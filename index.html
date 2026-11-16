@@ -8,7 +8,7 @@ body.stage-open>header,body.stage-open aside{display:none}
 body.stage-open #openStage{display:none}
 body.stage-open #closeStage{display:inline-block}
 body.stage-open main{position:fixed;inset:0;z-index:10;display:flex;flex-direction:column;gap:6px;border:0;border-radius:0;background:#000000;padding:max(12px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left))}
-body.stage-open main>:not(#songTitle,#seek,.controls,.toolbar,#sheet){display:none}
+body.stage-open main>:not(#songTitle,#upNext,#seek,.controls,.toolbar,#sheet){display:none}
 body.stage-open #songTitle{font-size:clamp(17px,3vw,25px);margin:0;overflow-wrap:anywhere}
 body.stage-open .controls,body.stage-open .toolbar{gap:6px;margin:0}
 body.stage-open .controls button{min-height:44px;min-width:0;padding:7px 10px}
@@ -44,7 +44,9 @@ body.album-open #songs{max-height:none;overflow:visible}
 .track-nav-icon{display:inline-flex;align-items:center;flex:none;color:#fff}
 .track-nav-icon::before,.track-nav-icon::after{content:'';display:block;width:6px;height:6px;border-top:2px solid currentColor;border-right:2px solid currentColor;transform:rotate(45deg)}
 #back .track-nav-icon{transform:rotate(180deg)}
-</style></head><body><header><div class="stage-brand"><img class="stage-brand-logo" src="mg-logo.png" alt="MG Künstlerlogo" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><strong class="stage-brand-fallback" hidden>MG</strong><div class="stage-brand-label">STAGE PLAYER</div><div class="muted">Deine Bühne. Deine Musik. <span class="badge">Version 0.6.10</span></div></div><div class="import-controls"><label for="importAlbum">Importieren in</label><select id="importAlbum"></select><label class="file">+ Backingtracks importieren<input id="files" type="file" accept="audio/*,.mp3,.m4a,.wav,.aac" multiple disabled></label></div></header><div class="layout"><aside class="panel"><div id="albumViewHeader"><button id="closeAlbum" type="button">Zurück zur Hauptseite</button><h1 id="albumViewTitle" tabindex="-1"></h1></div><strong>Meine Songs</strong><p class="hint">Importierte Audiodateien werden auf diesem Gerät gespeichert. Die Songs bleiben privat und werden nicht auf GitHub hochgeladen.</p><div class="row"><input id="playlistName" placeholder="Neue Playlist" aria-label="Playlistname"><button id="addPlaylist">Erstellen</button></div><select id="playlist" aria-label="Aktive Playlist"><option value="">Alle Songs</option></select><section id="albumPicker" aria-labelledby="albumsHeading"><strong id="albumsHeading">Alben</strong><div id="albumButtons"></div></section><div id="albumFilter" class="album-controls"><label for="album">Album wechseln</label><select id="album"></select></div><ul id="songs"></ul><button id="addToPlaylist">Ausgewählten Song hinzufügen</button><div class="row"><button id="moveUp">↑ Reihenfolge</button><button id="moveDown">↓ Reihenfolge</button></div><button id="removeFromPlaylist">Aus Playlist entfernen</button><details><summary>Datensicherung und Verwaltung</summary><button id="export">Texte & Playlists sichern</button><label class="file">Sicherung importieren<input id="restore" type="file" accept="application/json,.json"></label><button id="deletePlaylist">Playlist löschen</button><p class="hint">Die Sicherung enthält Texte und Playlists, aber keine Audiodateien. Safari kann lokale Website-Daten löschen. Vor Auftritten Offline-Modus und Speicherplatz testen.</p></details></aside><main class="panel"><div class="muted">AKTUELLER SONG</div><div class="songname" id="songTitle">Noch kein Song gewählt</div><div class="status" id="status" role="status">Bereit</div><div class="album-controls"><label for="songAlbum">Album des aktuellen Songs</label><select id="songAlbum" disabled></select><button id="saveAlbum" disabled>Albumzuordnung speichern</button></div><audio id="audio" preload="metadata"></audio><input id="seek" type="range" min="0" max="100" step="0.1" value="0" aria-label="Songposition"><div class="time small"><span id="elapsed">0:00</span><span id="duration">0:00</span></div><div class="controls"><button id="back" class="track-nav" type="button"><span class="track-nav-icon" aria-hidden="true"></span>Zurück</button><button id="play" class="primary" type="button"><span class="play-icon" aria-hidden="true"></span><span id="playLabel">Play</span></button><button id="stop">■ Stopp</button><button id="next" class="track-nav" type="button">Weiter<span class="track-nav-icon" aria-hidden="true"></span></button><button id="openStage" type="button">Bühnenansicht</button><button id="closeStage" type="button">Zurück zur Übersicht</button></div><label>Individuelle Song-Lautstärke: <span id="volumeText">100%</span><input id="volume" type="range" min="0" max="1" step="0.01" value="1"></label><div class="hint">Lautstärke pro Song gespeichert. Automatische Lautheits-Normalisierung ist noch nicht enthalten.</div><details><summary>Songtext und Akkorde bearbeiten</summary><textarea id="lyrics" placeholder="Beispiel: [C]Hello [Am]again"></textarea><label class="file">Textdatei importieren (.txt)<input id="importLyrics" type="file" accept=".txt,text/plain"></label><p class="hint">Wähle zuerst einen Song. Du kannst Text einfügen, tippen oder eine TXT-Datei aus «Dateien» auswählen.</p><p class="hint">Setze den Cursor in die erste Zeile eines Abschnitts. Spiele den Backingtrack bis zum Einsatz ab und tippe auf «Zeitmarke setzen». Die Marke am Zeilenanfang lässt sich ändern oder löschen.</p><button id="markLyrics" type="button" disabled>Zeitmarke setzen</button> <button id="saveLyrics" class="primary">Text speichern</button><output id="lyricsStatus" class="hint" role="status"></output></details><div class="toolbar"><strong>Live-Ansicht · Text & Akkorde</strong><label><input id="followLyrics" type="checkbox" checked> Automatisch scrollen</label><button id="fontMinus">A−</button><span id="fontValue">24 px</span><button id="fontPlus">A+</button></div><div id="sheet" class="sheet">Hier erscheint dein Songtext.</div><div class="row"><button id="deleteSong">Song lokal löschen</button></div><p class="hint">Autostopp: Nach Songende wird der nächste Song vorbereitet, aber niemals automatisch gestartet. Für den Offline-Einsatz die installierte App vor dem Auftritt einmal online öffnen.</p></main></div><script>
+#upNext{display:none}
+body.stage-open #upNext:not([hidden]){display:block;color:#dfc6cf;font-size:.85rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+</style></head><body><header><div class="stage-brand"><img class="stage-brand-logo" src="mg-logo.png" alt="MG Künstlerlogo" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><strong class="stage-brand-fallback" hidden>MG</strong><div class="stage-brand-label">STAGE PLAYER</div><div class="muted">Deine Bühne. Deine Musik. <span class="badge">Version 0.6.11</span></div></div><div class="import-controls"><label for="importAlbum">Importieren in</label><select id="importAlbum"></select><label class="file">+ Backingtracks importieren<input id="files" type="file" accept="audio/*,.mp3,.m4a,.wav,.aac" multiple disabled></label></div></header><div class="layout"><aside class="panel"><div id="albumViewHeader"><button id="closeAlbum" type="button">Zurück zur Hauptseite</button><h1 id="albumViewTitle" tabindex="-1"></h1></div><strong>Meine Songs</strong><p class="hint">Importierte Audiodateien werden auf diesem Gerät gespeichert. Die Songs bleiben privat und werden nicht auf GitHub hochgeladen.</p><div class="row"><input id="playlistName" placeholder="Neue Playlist" aria-label="Playlistname"><button id="addPlaylist">Erstellen</button></div><select id="playlist" aria-label="Aktive Playlist"><option value="">Alle Songs</option></select><section id="albumPicker" aria-labelledby="albumsHeading"><strong id="albumsHeading">Alben</strong><div id="albumButtons"></div></section><div id="albumFilter" class="album-controls"><label for="album">Album wechseln</label><select id="album"></select></div><ul id="songs"></ul><button id="addToPlaylist">Ausgewählten Song hinzufügen</button><div class="row"><button id="moveUp">↑ Reihenfolge</button><button id="moveDown">↓ Reihenfolge</button></div><button id="removeFromPlaylist">Aus Playlist entfernen</button><details><summary>Datensicherung und Verwaltung</summary><button id="export">Texte & Playlists sichern</button><label class="file">Sicherung importieren<input id="restore" type="file" accept="application/json,.json"></label><button id="deletePlaylist">Playlist löschen</button><p class="hint">Die Sicherung enthält Texte und Playlists, aber keine Audiodateien. Safari kann lokale Website-Daten löschen. Vor Auftritten Offline-Modus und Speicherplatz testen.</p></details></aside><main class="panel"><div class="muted">AKTUELLER SONG</div><div class="songname" id="songTitle">Noch kein Song gewählt</div><div id="upNext" hidden></div><div class="status" id="status" role="status">Bereit</div><div class="album-controls"><label for="songAlbum">Album des aktuellen Songs</label><select id="songAlbum" disabled></select><button id="saveAlbum" disabled>Albumzuordnung speichern</button></div><audio id="audio" preload="metadata"></audio><input id="seek" type="range" min="0" max="100" step="0.1" value="0" aria-label="Songposition"><div class="time small"><span id="elapsed">0:00</span><span id="duration">0:00</span></div><div class="controls"><button id="back" class="track-nav" type="button"><span class="track-nav-icon" aria-hidden="true"></span>Zurück</button><button id="play" class="primary" type="button"><span class="play-icon" aria-hidden="true"></span><span id="playLabel">Play</span></button><button id="stop">■ Stopp</button><button id="next" class="track-nav" type="button">Weiter<span class="track-nav-icon" aria-hidden="true"></span></button><button id="openStage" type="button">Bühnenansicht</button><button id="closeStage" type="button">Zurück zur Übersicht</button></div><label>Individuelle Song-Lautstärke: <span id="volumeText">100%</span><input id="volume" type="range" min="0" max="1" step="0.01" value="1"></label><div class="hint">Die App gleicht die Lautstärke der Backingtracks automatisch ab. Hier kannst du pro Song nachregeln.</div><details><summary>Songtext und Akkorde bearbeiten</summary><textarea id="lyrics" placeholder="Beispiel: [C]Hello [Am]again"></textarea><label class="file">Textdatei importieren (.txt)<input id="importLyrics" type="file" accept=".txt,text/plain"></label><p class="hint">Wähle zuerst einen Song. Du kannst Text einfügen, tippen oder eine TXT-Datei aus «Dateien» auswählen.</p><p class="hint">Setze den Cursor in die erste Zeile eines Abschnitts. Spiele den Backingtrack bis zum Einsatz ab und tippe auf «Zeitmarke setzen». Die Marke am Zeilenanfang lässt sich ändern oder löschen.</p><button id="markLyrics" type="button" disabled>Zeitmarke setzen</button> <button id="saveLyrics" class="primary">Text speichern</button><output id="lyricsStatus" class="hint" role="status"></output></details><div class="toolbar"><strong>Live-Ansicht · Text & Akkorde</strong><label><input id="followLyrics" type="checkbox" checked> Automatisch scrollen</label><button id="fontMinus">A−</button><span id="fontValue">24 px</span><button id="fontPlus">A+</button></div><div id="sheet" class="sheet">Hier erscheint dein Songtext.</div><div class="row"><button id="deleteSong">Song lokal löschen</button></div><p class="hint">Autostopp: Nach Songende wird der nächste Song vorbereitet, aber niemals automatisch gestartet. Für den Offline-Einsatz die installierte App vor dem Auftritt einmal online öffnen.</p></main></div><script>
 'use strict';const $=id=>document.getElementById(id),audio=$('audio');let db,tracks=[],current=null,url=null,playlists={},notes={},volumes={},fontSize=Number(localStorage.getItem('mg_fontsize')||24);const DB='mg-stage-player-local-v04';function msg(s){$('status').textContent=s}function fmt(n){return Number.isFinite(n)?Math.floor(n/60)+':'+String(Math.floor(n%60)).padStart(2,'0'):'0:00'}function openDb(){return new Promise((resolve,reject)=>{const r=indexedDB.open(DB,1);r.onupgradeneeded=()=>{const d=r.result;d.createObjectStore('songs',{keyPath:'id'});d.createObjectStore('settings',{keyPath:'key'})};r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)})}function tx(store,mode,work){return new Promise((resolve,reject)=>{const t=db.transaction(store,mode),s=t.objectStore(store),r=work(s);t.oncomplete=()=>resolve(r?.result);t.onerror=()=>reject(t.error);t.onabort=()=>reject(t.error || new Error('Speichern abgebrochen'))})}const getAll=store=>tx(store,'readonly',s=>s.getAll());const put=(store,val)=>tx(store,'readwrite',s=>s.put(val));const del=(store,key)=>tx(store,'readwrite',s=>s.delete(key));async function saveMeta(){await put('settings',{key:'meta',playlists,notes,volumes})}const albums = ['Oldies', 'Schlager', 'Country', 'Diverse', 'Michael Bublé', 'Christmas', 'Italo', 'Elvis Presley'];
 
 for (const [id, label] of [['album', 'Alle Alben'], ['importAlbum', 'Ohne Album'], ['songAlbum', 'Ohne Album']]) {
@@ -93,8 +95,9 @@ function clearSongSelection() {
   $('elapsed').textContent = '0:00';
   $('duration').textContent = '0:00';
   $('seek').value = 0;
-  audio.volume = 1;
+  currentNormalization = 1;
   $('volume').value = 1;
+  applySongVolume();
   $('volumeText').textContent = '100%';
   drawSheet();
   msg('Bitte einen Song auswählen');
@@ -215,6 +218,104 @@ async function loadSongDurations() {
   }
 }
 
+const songGains = new Map();
+const gainKeyPrefix = 'loudness-rms-v1:';
+const AudioContextType = window.AudioContext || window.webkitAudioContext;
+const OfflineContextType = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+let playbackContext, playbackGain, decoder;
+let analysisTimer, analyzing = false, playbackRequested = false;
+let currentNormalization = 1;
+
+function measureGain(buffer) {
+  let peak = 0;
+  const blocks = new Float64Array(Math.ceil(buffer.length / (buffer.sampleRate * .25)));
+  const blockSize = Math.ceil(buffer.length / blocks.length);
+  for (let channel = 0; channel < buffer.numberOfChannels; channel++) {
+    const samples = buffer.getChannelData(channel);
+    for (let i = 0; i < samples.length; i++) {
+      const sample = samples[i];
+      peak = Math.max(peak, Math.abs(sample));
+      blocks[Math.floor(i / blockSize)] += sample * sample;
+    }
+  }
+  if (!peak) return 1;
+  let energy = 0, count = 0;
+  for (let i = 0; i < blocks.length; i++) {
+    const length = Math.min(blockSize, buffer.length - i * blockSize);
+    const meanSquare = blocks[i] / (length * buffer.numberOfChannels);
+    if (meanSquare >= .0001) {
+      energy += meanSquare;
+      count++;
+    }
+  }
+  if (!count) return 1;
+  const rms = Math.sqrt(energy / count);
+  return Math.min(.112 / rms, .79 / peak, 2);
+}
+
+function scheduleLoudnessAnalysis() {
+  if (!AudioContextType || !OfflineContextType || analyzing || analysisTimer || playbackRequested || !audio.paused) return;
+  analysisTimer = setTimeout(async () => {
+    analysisTimer = null;
+    if (playbackRequested || !audio.paused) return;
+    const track = tracks.find(item => !songGains.has(item.id));
+    if (!track) return;
+    analyzing = true;
+    try {
+      decoder ||= new OfflineContextType(1, 1, 44100);
+      const bytes = await track.blob.arrayBuffer();
+      const buffer = await decoder.decodeAudioData(bytes);
+      if (tracks.includes(track)) {
+        const gain = measureGain(buffer);
+        songGains.set(track.id, gain);
+        await put('settings', { key: gainKeyPrefix + track.id, gain });
+      }
+    } catch (error) {
+      if (!songGains.has(track.id)) songGains.set(track.id, 1);
+      console.warn('Lautstärke konnte nicht analysiert werden:', error);
+    } finally {
+      analyzing = false;
+      scheduleLoudnessAnalysis();
+    }
+  }, 160);
+}
+
+function applySongVolume() {
+  const manual = Number($('volume').value);
+  if (playbackGain) playbackGain.gain.value = currentNormalization * manual;
+  else audio.volume = manual;
+}
+
+async function enablePlaybackGain() {
+  if (!AudioContextType) return;
+  try {
+    playbackContext ||= new AudioContextType();
+    await playbackContext.resume();
+    if (!playbackGain) {
+      const gain = playbackContext.createGain();
+      gain.connect(playbackContext.destination);
+      playbackContext.createMediaElementSource(audio).connect(gain);
+      playbackGain = gain;
+      audio.volume = 1;
+    }
+    applySongVolume();
+  } catch (error) {
+    console.warn('Automatischer Lautstärke-Abgleich nicht verfügbar:', error);
+  }
+}
+
+function nextTrackId() {
+  const ids = indices();
+  const index = ids.indexOf(current);
+  return index < 0 ? null : ids[index + 1] ?? null;
+}
+
+function updateUpNext() {
+  const next = tracks.find(track => track.id === nextTrackId());
+  $('upNext').hidden = !next;
+  $('upNext').textContent = next ? 'Als Nächstes: ' + next.name : '';
+}
+
 function setPlayButton(playing) {
   $('play').dataset.playing = String(playing);
   $('playLabel').textContent = playing ? 'Pause' : 'Play';
@@ -227,7 +328,7 @@ const duration=document.createElement('span');duration.className='song-row-durat
 const seconds=songDurations.get(id);duration.textContent=Number.isFinite(seconds)?fmt(seconds):'—';
 durationLabels.set(id,duration);
 if(!songDurations.has(id))pendingDurations.set(id,t.blob);
-li.append(title,duration);li.tabIndex=0;li.className=id===current?'song-row active':'song-row';li.onclick=()=>selectSongFromList(id);li.onkeydown=e=>{if(e.key==='Enter')selectSongFromList(id)};list.append(li)}if(!list.children.length){const li=document.createElement('li');li.className='empty-album';li.textContent=$('album').value ? 'Noch keine Songs in diesem Album' : 'Keine Songs in dieser Ansicht';list.append(li)}loadSongDurations()}function renderPlaylists(preferred){const p=preferred??$('playlist').value;$('playlist').replaceChildren(new Option('Alle Songs',''));for(const name of Object.keys(playlists))$('playlist').add(new Option(name,name));$('playlist').value=Object.hasOwn(playlists,p)?p:'';render()}
+li.append(title,duration);li.tabIndex=0;li.className=id===current?'song-row active':'song-row';li.onclick=()=>selectSongFromList(id);li.onkeydown=e=>{if(e.key==='Enter')selectSongFromList(id)};list.append(li)}if(!list.children.length){const li=document.createElement('li');li.className='empty-album';li.textContent=$('album').value ? 'Noch keine Songs in diesem Album' : 'Keine Songs in dieser Ansicht';list.append(li)}loadSongDurations();updateUpNext();scheduleLoudnessAnalysis()}function renderPlaylists(preferred){const p=preferred??$('playlist').value;$('playlist').replaceChildren(new Option('Alle Songs',''));for(const name of Object.keys(playlists))$('playlist').add(new Option(name,name));$('playlist').value=Object.hasOwn(playlists,p)?p:'';render()}
 const timestamp = /^\[(\d+):([0-5]\d)(?:\.(\d{1,3}))?\][ \t]?/;
 let lyricCues = [];
 let activeCue = null;
@@ -327,7 +428,7 @@ $('markLyrics').onclick = () => {
   msg('Zeitmarke bei ' + mark.trim() + ' lokal gespeichert');
 };
 
-function storeCurrentNotes(){if(current!==null)notes[current]=$('lyrics').value}function choose(id){const t=tracks.find(x=>x.id===id);if(!t)return;storeCurrentNotes();audio.pause();if(url)URL.revokeObjectURL(url);url=URL.createObjectURL(t.blob);current=id;showSongAlbum(t);audio.src=url;audio.load();$('songTitle').textContent=t.name;$('lyricsStatus').textContent='';$('lyrics').value=notes[id]||'';$('sheet').scrollTop=0;$('markLyrics').disabled=false;drawSheet();audio.volume=volumes[id]??1;$('volume').value=audio.volume;$('volumeText').textContent=Math.round(audio.volume*100)+'%';setPlayButton(false);msg('Bereit – Play drücken');render();saveMeta().catch(console.error)}function setStage(open) {
+function storeCurrentNotes(){if(current!==null)notes[current]=$('lyrics').value}function choose(id){const t=tracks.find(x=>x.id===id);if(!t)return;storeCurrentNotes();audio.pause();if(url)URL.revokeObjectURL(url);url=URL.createObjectURL(t.blob);current=id;showSongAlbum(t);audio.src=url;audio.load();$('songTitle').textContent=t.name;$('lyricsStatus').textContent='';$('lyrics').value=notes[id]||'';$('sheet').scrollTop=0;$('markLyrics').disabled=false;drawSheet();currentNormalization=songGains.get(id)??1;$('volume').value=volumes[id]??1;applySongVolume();$('volumeText').textContent=Math.round(Number($('volume').value)*100)+'%';setPlayButton(false);msg('Bereit – Play drücken');render();saveMeta().catch(console.error)}function setStage(open) {
   if (open === document.body.classList.contains('stage-open')) return;
   const fromAlbum = document.body.classList.contains('album-open');
   if (open && fromAlbum) albumScroll = window.scrollY;
@@ -396,10 +497,20 @@ $('files').onchange = async event => {
     input.disabled = false;
   }
 };
-$('play').onclick=async()=>{if(current===null)return msg('Bitte zuerst einen Song auswählen');if(audio.paused){try{await audio.play();setPlayButton(true);msg('Wiedergabe läuft');setStage(true)}catch(e){msg('Wiedergabe nicht möglich: '+e.message)}}else{audio.pause();setPlayButton(false);msg('Pausiert')}};$('stop').onclick=()=>{audio.pause();audio.currentTime=0;setPlayButton(false);msg('Gestoppt')};$('back').onclick=()=>adjacent(-1);$('next').onclick=()=>adjacent(1);audio.onended=()=>{const ids=indices(),at=ids.indexOf(current),next=at>=0?ids[at+1]:null;if(next){choose(next);msg('Nächster Song vorbereitet – Play drücken')}else{audio.pause();audio.currentTime=0;setPlayButton(false);msg('Autostopp – kein weiterer Song')}};audio.ontimeupdate=()=>{$('elapsed').textContent=fmt(audio.currentTime);$('duration').textContent=fmt(audio.duration);$('seek').value=audio.duration?audio.currentTime/audio.duration*100:0;syncLyrics()};audio.onseeked=syncLyrics;audio.onloadedmetadata=()=>{
+$('play').onclick=async()=>{if(current===null)return msg('Bitte zuerst einen Song auswählen');if(audio.paused){
+  playbackRequested=true;
+  currentNormalization=songGains.get(current)??1;
+  applySongVolume();
+  try{
+    enablePlaybackGain();
+    await audio.play();
+    if(!audio.paused){setPlayButton(true);msg('Wiedergabe läuft');setStage(true)}
+  }catch(e){msg('Wiedergabe nicht möglich: '+e.message)}
+  finally{playbackRequested=false;scheduleLoudnessAnalysis()}
+}else{audio.pause();setPlayButton(false);msg('Pausiert')}};$('stop').onclick=()=>{audio.pause();audio.currentTime=0;setPlayButton(false);msg('Gestoppt')};$('back').onclick=()=>adjacent(-1);$('next').onclick=()=>adjacent(1);audio.onpause=scheduleLoudnessAnalysis;audio.onended=()=>{scheduleLoudnessAnalysis();const next=nextTrackId();if(next){choose(next);msg('Nächster Song vorbereitet – Play drücken')}else{audio.pause();audio.currentTime=0;setPlayButton(false);msg('Autostopp – kein weiterer Song')}};audio.ontimeupdate=()=>{$('elapsed').textContent=fmt(audio.currentTime);$('duration').textContent=fmt(audio.duration);$('seek').value=audio.duration?audio.currentTime/audio.duration*100:0;syncLyrics()};audio.onseeked=syncLyrics;audio.onloadedmetadata=()=>{
   $('duration').textContent=fmt(audio.duration);
   if(current!==null&&Number.isFinite(audio.duration))showDuration(current,audio.duration);
-};$('seek').oninput=e=>{if(audio.duration)audio.currentTime=Number(e.target.value)/100*audio.duration};$('volume').oninput=async e=>{audio.volume=Number(e.target.value);$('volumeText').textContent=Math.round(audio.volume*100)+'%';if(current!==null){volumes[current]=audio.volume;await saveMeta()}};$('lyrics').oninput=()=>{drawSheet();$('lyricsStatus').textContent='';if(current!==null){storeCurrentNotes();saveMeta().catch(console.error)}};$('saveLyrics').onclick = async () => {
+};$('seek').oninput=e=>{if(audio.duration)audio.currentTime=Number(e.target.value)/100*audio.duration};$('volume').oninput=async e=>{const manual=Number(e.target.value);applySongVolume();$('volumeText').textContent=Math.round(manual*100)+'%';if(current!==null){volumes[current]=manual;await saveMeta()}};$('lyrics').oninput=()=>{drawSheet();$('lyricsStatus').textContent='';if(current!==null){storeCurrentNotes();saveMeta().catch(console.error)}};$('saveLyrics').onclick = async () => {
   const song = current;
   if (song === null) {
     $('lyricsStatus').textContent = 'Bitte zuerst einen Song auswählen';
@@ -435,5 +546,5 @@ $('importLyrics').onchange = async event => {
     msg('Textdatei konnte nicht gelesen werden');
     console.error(error);
   }
-};$('fontMinus').onclick=()=>{fontSize=Math.max(14,fontSize-2);localStorage.setItem('mg_fontsize',fontSize);drawSheet()};$('fontPlus').onclick=()=>{fontSize=Math.min(52,fontSize+2);localStorage.setItem('mg_fontsize',fontSize);drawSheet()};$('addPlaylist').onclick=async()=>{const name=$('playlistName').value.trim();if(!name)return;if(!Object.hasOwn(playlists,name))playlists[name]=[];await saveMeta();$('album').value='';renderPlaylists(name);$('playlistName').value=''};$('playlist').onchange=()=>{$('album').value='';showSelectedSongs()};$('addToPlaylist').onclick=async()=>{const p=$('playlist').value;if(!p||current===null)return msg('Playlist und Song auswählen');if(!playlists[p].includes(current))playlists[p].push(current);await saveMeta();render();msg('Song hinzugefügt')};async function reorder(n){const p=$('playlist').value;if(!p||current===null)return msg('Zuerst Playlist wählen');const a=playlists[p],i=a.indexOf(current),j=i+n;if(i<0||j<0||j>=a.length)return;[a[i],a[j]]=[a[j],a[i]];await saveMeta();render()}$('moveUp').onclick=()=>reorder(-1);$('moveDown').onclick=()=>reorder(1);$('removeFromPlaylist').onclick=async()=>{const p=$('playlist').value;if(!p||current===null)return;playlists[p]=playlists[p].filter(id=>id!==current);await saveMeta();render()};$('deletePlaylist').onclick=async()=>{const p=$('playlist').value;if(!p||!confirm('Playlist wirklich löschen?'))return;delete playlists[p];await saveMeta();renderPlaylists('')};$('deleteSong').onclick=async()=>{if(current===null||!confirm('Song und seine lokale Audiodatei wirklich löschen?'))return;const id=current;audio.pause();if(url)URL.revokeObjectURL(url);url=null;audio.removeAttribute('src');audio.load();await del('songs',id);tracks=tracks.filter(t=>t.id!==id);for(const p of Object.keys(playlists))playlists[p]=playlists[p].filter(x=>x!==id);delete notes[id];delete volumes[id];current=null;showSongAlbum(null);await saveMeta();$('songTitle').textContent='Noch kein Song gewählt';$('lyrics').value='';$('markLyrics').disabled=true;drawSheet();render();if(indices().length)choose(indices()[0]);else msg('Song lokal gelöscht')};$('export').onclick=()=>{storeCurrentNotes();const blob=new Blob([JSON.stringify({version:1,playlists,notes,volumes},null,2)],{type:'application/json'}),u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download='MG-Stage-Player-Backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(u),3000)};$('restore').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const data=JSON.parse(await f.text());if(!data||typeof data.playlists!=='object'||typeof data.notes!=='object'||!confirm('Bestehende Texte und Playlists durch diese Sicherung ersetzen?'))return;playlists=data.playlists;notes=data.notes;volumes=data.volumes||{};await saveMeta();renderPlaylists('');if(current!==null){$('lyrics').value=notes[current]||'';choose(current)}msg('Sicherung importiert (Audiodateien separat importieren)')}catch(err){msg('Ungültige Sicherungsdatei')}e.target.value=''};async function init(){try{db=await openDb();tracks=await getAll('songs');$('files').disabled=false;const all=await getAll('settings'),meta=all.find(x=>x.key==='meta')||{};playlists=meta.playlists||{};notes=meta.notes||{};volumes=meta.volumes||{};renderPlaylists('');if(tracks.length)choose(tracks[0].id);else msg('Bereit – Backingtracks importieren');if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost'))navigator.serviceWorker.register('./sw.js').catch(console.error)}catch(e){msg('Lokaler Speicher nicht verfügbar. Bitte Safari-Einstellungen prüfen.');console.error(e)}}drawSheet();init();
+};$('fontMinus').onclick=()=>{fontSize=Math.max(14,fontSize-2);localStorage.setItem('mg_fontsize',fontSize);drawSheet()};$('fontPlus').onclick=()=>{fontSize=Math.min(52,fontSize+2);localStorage.setItem('mg_fontsize',fontSize);drawSheet()};$('addPlaylist').onclick=async()=>{const name=$('playlistName').value.trim();if(!name)return;if(!Object.hasOwn(playlists,name))playlists[name]=[];await saveMeta();$('album').value='';renderPlaylists(name);$('playlistName').value=''};$('playlist').onchange=()=>{$('album').value='';showSelectedSongs()};$('addToPlaylist').onclick=async()=>{const p=$('playlist').value;if(!p||current===null)return msg('Playlist und Song auswählen');if(!playlists[p].includes(current))playlists[p].push(current);await saveMeta();render();msg('Song hinzugefügt')};async function reorder(n){const p=$('playlist').value;if(!p||current===null)return msg('Zuerst Playlist wählen');const a=playlists[p],i=a.indexOf(current),j=i+n;if(i<0||j<0||j>=a.length)return;[a[i],a[j]]=[a[j],a[i]];await saveMeta();render()}$('moveUp').onclick=()=>reorder(-1);$('moveDown').onclick=()=>reorder(1);$('removeFromPlaylist').onclick=async()=>{const p=$('playlist').value;if(!p||current===null)return;playlists[p]=playlists[p].filter(id=>id!==current);await saveMeta();render()};$('deletePlaylist').onclick=async()=>{const p=$('playlist').value;if(!p||!confirm('Playlist wirklich löschen?'))return;delete playlists[p];await saveMeta();renderPlaylists('')};$('deleteSong').onclick=async()=>{if(current===null||!confirm('Song und seine lokale Audiodatei wirklich löschen?'))return;const id=current;audio.pause();if(url)URL.revokeObjectURL(url);url=null;audio.removeAttribute('src');audio.load();await del('songs',id);tracks=tracks.filter(t=>t.id!==id);songGains.delete(id);await del('settings',gainKeyPrefix+id).catch(console.warn);for(const p of Object.keys(playlists))playlists[p]=playlists[p].filter(x=>x!==id);delete notes[id];delete volumes[id];current=null;showSongAlbum(null);await saveMeta();$('songTitle').textContent='Noch kein Song gewählt';$('lyrics').value='';$('markLyrics').disabled=true;drawSheet();render();if(indices().length)choose(indices()[0]);else msg('Song lokal gelöscht')};$('export').onclick=()=>{storeCurrentNotes();const blob=new Blob([JSON.stringify({version:1,playlists,notes,volumes},null,2)],{type:'application/json'}),u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download='MG-Stage-Player-Backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(u),3000)};$('restore').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const data=JSON.parse(await f.text());if(!data||typeof data.playlists!=='object'||typeof data.notes!=='object'||!confirm('Bestehende Texte und Playlists durch diese Sicherung ersetzen?'))return;playlists=data.playlists;notes=data.notes;volumes=data.volumes||{};await saveMeta();renderPlaylists('');if(current!==null){$('lyrics').value=notes[current]||'';choose(current)}msg('Sicherung importiert (Audiodateien separat importieren)')}catch(err){msg('Ungültige Sicherungsdatei')}e.target.value=''};async function init(){try{db=await openDb();tracks=await getAll('songs');$('files').disabled=false;const all=await getAll('settings'),meta=all.find(x=>x.key==='meta')||{};playlists=meta.playlists||{};notes=meta.notes||{};volumes=meta.volumes||{};for(const item of all){if(item.key.startsWith(gainKeyPrefix)&&Number.isFinite(item.gain))songGains.set(item.key.slice(gainKeyPrefix.length),item.gain)}renderPlaylists('');if(tracks.length)choose(tracks[0].id);else msg('Bereit – Backingtracks importieren');if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost'))navigator.serviceWorker.register('./sw.js').catch(console.error)}catch(e){msg('Lokaler Speicher nicht verfügbar. Bitte Safari-Einstellungen prüfen.');console.error(e)}}drawSheet();init();
 </script></body></html>
